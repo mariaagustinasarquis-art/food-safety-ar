@@ -5,13 +5,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Food Safety AR</title>
+
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  <style>
-    body { margin: 0; }
-  </style>
+
+  <script>
+    AFRAME.registerComponent('bacteria', {
+      init: function () {
+        const root = this.el;
+        const colors = ['#20b7a5', '#df7560', '#8b80c9'];
+
+        for (let i = 0; i < 9; i++) {
+          const group = document.createElement('a-entity');
+
+          const x = (Math.random() - 0.5) * 0.85;
+          const y = (Math.random() - 0.5) * 0.7;
+          const z = 0.12 + Math.random() * 0.12;
+
+          group.setAttribute('position', `${x} ${y} ${z}`);
+          group.setAttribute('rotation', `0 0 ${Math.random() * 180}`);
+
+          const cell = document.createElement('a-capsule');
+          cell.setAttribute('radius', 0.025);
+          cell.setAttribute('height', 0.12);
+          cell.setAttribute('material', {
+            color: colors[i % colors.length],
+            roughness: 0.4,
+            metalness: 0.15
+          });
+
+          group.appendChild(cell);
+
+          group.setAttribute('animation', {
+            property: 'position',
+            to: `${x} ${y + 0.045} ${z}`,
+            dir: 'alternate',
+            dur: 1200 + i * 180,
+            loop: true,
+            easing: 'easeInOutSine'
+          });
+
+          root.appendChild(group);
+        }
+      }
+    });
+  </script>
 </head>
-<body>
+
+<body style="margin:0; overflow:hidden;">
+
   <a-scene
     mindar-image="imageTargetSrc: ./targets.mind;"
     color-space="sRGB"
@@ -19,25 +61,27 @@
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
 
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-camera position="0 0 0"
+      look-controls="enabled: false">
+    </a-camera>
 
     <a-entity mindar-image-target="targetIndex: 0">
-      <a-circle
-        position="0 0 0.1"
-        radius="0.3"
-        color="#FF3333"
-        opacity="0.8">
-      </a-circle>
+
+      <a-entity bacteria></a-entity>
 
       <a-text
-        value="Invisible risks!"
+        value="What can't you see?"
         color="#FFFFFF"
         align="center"
-        position="0 -0.5 0.1"
-        width="2">
+        position="0 -0.55 0.1"
+        width="1.8"
+        side="double">
       </a-text>
+
     </a-entity>
 
   </a-scene>
+
 </body>
 </html>
+
