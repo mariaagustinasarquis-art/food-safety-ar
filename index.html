@@ -26,12 +26,12 @@
           group.setAttribute('rotation', `0 0 ${Math.random() * 180}`);
 
           const cell = document.createElement('a-capsule');
-          cell.setAttribute('radius', 0.025);
-          cell.setAttribute('height', 0.12);
+          cell.setAttribute('radius', 0.07);
+          cell.setAttribute('height', 0.28);
           cell.setAttribute('material', {
             color: colors[i % colors.length],
-            roughness: 0.4,
-            metalness: 0.15
+            roughness: 0.5,
+            metalness: 0.25
           });
 
           group.appendChild(cell);
